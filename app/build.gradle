@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.learningtime"
@@ -31,6 +31,7 @@ android {
     }
     buildToolsVersion '32.1.0 rc1'
 }
+//jj
 
 dependencies {
 
