@@ -13,8 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".PdfViewActivity"
             android:exported="false" />
+        <activity
+            android:name=".PdfDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="true" />
         <activity
             android:name=".PdfListAdminActivity"
             android:exported="true" />
