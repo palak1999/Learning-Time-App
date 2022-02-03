@@ -69,23 +69,21 @@ public class BooksUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding=FragmentBooksUserBinding.inflate(LayoutInflater.from(getContext()), container,false);
-        Log.d(TAG,"onCreateView: Category: "+category);
-        if(category.equals("All")){
+        binding = FragmentBooksUserBinding.inflate(LayoutInflater.from(getContext()), container, false);
+        Log.d(TAG, "onCreateView: Category: " + category);
+        if (category.equals("All")) {
             //load all books
             loadAllBooks();
 
-        }
-    /* else if(category.equals("Most Viewed")){
+        } else if (category.equals("Most Viewed")) {
             //load most viewed books
-            loadMostViewedDownloadedBooks();
-        }
-        else if(category.equals("Most Downloaded")){
-
-        }*/
-        else{
+            loadMostViewedDownloadedBooks("viewsCount");
+        } else if (category.equals("Most Downloaded")) {
+            loadMostViewedDownloadedBooks("downloadsCount");
+        } else {
             loadCategorizedBooks();
         }
+
         binding.searchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {
@@ -132,6 +130,30 @@ public class BooksUserFragment extends Fragment {
             }
         });
     }
+
+    private void loadMostViewedDownloadedBooks(String orderBy) {
+        pdfArrayList=new ArrayList<>();
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Books");
+        ref.orderByChild(orderBy).limitToLast(10)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pdfArrayList.clear();
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    ModelPdf model=ds.getValue(ModelPdf.class);
+                    pdfArrayList.add(model);
+                }
+                adapterPdfUser=new AdapterPdfUser(getContext(),pdfArrayList);
+                binding.bookRv.setAdapter(adapterPdfUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void loadCategorizedBooks(){
         pdfArrayList=new ArrayList<>();
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Books");

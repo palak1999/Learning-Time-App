@@ -48,5 +48,6 @@ public class FilterPdfUser extends Filter {
     protected void publishResults(CharSequence constraint, FilterResults results) {
         adapterPdfUser.pdfArrayList=(ArrayList<ModelPdf>)results.values;
 
+        adapterPdfUser.notifyDataSetChanged();
     }
 }

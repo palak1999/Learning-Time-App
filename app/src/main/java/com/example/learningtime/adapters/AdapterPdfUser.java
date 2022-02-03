@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.learningtime.MyApplication;
+import com.example.learningtime.PdfDetailActivity;
 import com.example.learningtime.databinding.RowPdfAdminBinding;
 import com.example.learningtime.databinding.RowPdfUserBinding;
 import com.example.learningtime.filters.FilterPdfUser;
@@ -46,6 +47,7 @@ public class AdapterPdfUser extends RecyclerView.Adapter<AdapterPdfUser.HolderPd
     @Override
     public void onBindViewHolder(@NonNull AdapterPdfUser.HolderPdfUser holder, int position) {
         ModelPdf model = pdfArrayList.get(position);
+        String bookId=model.getId();
         String title=model.getTitle();
         String description=model.getDescription();
         String pdfUrl=model.getUrl();
@@ -57,11 +59,28 @@ public class AdapterPdfUser extends RecyclerView.Adapter<AdapterPdfUser.HolderPd
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(date);
 
-        // MyApplication.loadPdfFromUrlSinglePage(""+pdfUrl,""+title,holder.pdfView,holder.progressBar);
+        MyApplication.loadPdfFromUrlSinglePage(
+                ""+pdfUrl,
+                ""+title,
+                holder.pdfView,
+                holder.progressBar
+        );
+        MyApplication.loadCategory(
+                ""+categoryId,
+                holder.categoryTv
+        );
+        MyApplication.loadPdfSize(
+                ""+pdfUrl,
+                ""+title,
+                holder.sizeTv
+        );
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(context, PdfDetailActivity.class);
+                intent.putExtra("bookId", bookId);
+                context.startActivity(intent);
             }
         });
 
